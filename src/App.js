@@ -14,27 +14,30 @@ export default function App() {
   };
 
   const updateTodo = (id, fields) => {
-    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, ...fields } : t)));
+    setTodos((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, ...fields } : t))
+    );
   };
 
-  const deleteTodo = (id) => setTodos((prev) => prev.filter((t) => t.id !== id));
+  const deleteTodo = (id) =>
+    setTodos((prev) => prev.filter((t) => t.id !== id));
 
   const filtered = todos.filter((t) => t.status === filter);
 
   return (
     // 🌟 wrapper applies dark mode
     <div className={darkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 transition-colors">
-        <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow p-6 transition-colors">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+      <div className="min-h-screen w-full overflow-x-hidden bg-gray-100 dark:bg-gray-900 p-4 sm:p-6 transition-colors">
+        <div className="w-full max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow p-4 sm:p-6 transition-colors">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 text-center sm:text-left">
               Todo List
             </h1>
 
             {/* 🌟 Theme toggle button */}
             <button
               onClick={() => setDarkMode((prev) => !prev)}
-              className="px-3 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-500"
+              className="w-full sm:w-auto px-3 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 text-sm sm:text-base transition"
             >
               {darkMode ? "Light Mode" : "Dark Mode"}
             </button>

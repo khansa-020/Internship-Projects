@@ -8,14 +8,17 @@ const TABS = [
 
 export default function StatusTabs({ filter, setFilter }) {
   return (
-    <div className="flex gap-2 my-4">
-      {TABS.map(t => (
+    <div className="flex flex-col sm:flex-row gap-2 my-4 w-full">
+      {TABS.map((t) => (
         <button
           key={t.key}
           onClick={() => setFilter(t.key)}
-          className={`px-4 py-2 rounded-full ${
-            filter === t.key ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-700"
-          }`}
+          className={`flex-1 sm:flex-none px-4 py-2 rounded-full text-center transition 
+            ${
+              filter === t.key
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
         >
           {t.label}
         </button>
