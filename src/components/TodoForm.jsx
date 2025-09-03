@@ -14,15 +14,15 @@ export default function TodoForm({ addTodo }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col sm:flex-row gap-2 w-full"
+      className="flex flex-row gap-2 w-full flex-wrap"
     >
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
-        className="flex-1 border rounded px-3 py-2 bg-white dark:bg-gray-700 dark:text-gray-100 w-full"
+        className="flex-1 min-w-[200px] border rounded px-3 py-2 mb-3 bg-white dark:bg-gray-700 dark:text-gray-100"
         placeholder="Add a new todo..."
       />
-      <button className="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded">
+      <button className="px-4 py-2 mb-3 bg-indigo-600 text-white rounded whitespace-nowrap">
         Add
       </button>
     </form>
