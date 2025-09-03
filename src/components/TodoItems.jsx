@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { HiDotsVertical } from "react-icons/hi";
 
 const STATUS_OPTIONS = [
   { value: "upcoming", label: "Upcoming" },
@@ -9,6 +10,7 @@ const STATUS_OPTIONS = [
 export default function TodoItem({ todo, updateTodo, deleteTodo }) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(todo.text);
+  const [statusMenuOpen, setStatusMenuOpen] = useState(false);
 
   const save = () => {
     const t = text.trim();
@@ -18,7 +20,7 @@ export default function TodoItem({ todo, updateTodo, deleteTodo }) {
   };
 
   return (
-    <li className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 w-full">
+    <li className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 w-full relative">
       {/* Left section */}
       <div className="flex flex-1 items-start gap-3">
         <input
@@ -34,7 +36,8 @@ export default function TodoItem({ todo, updateTodo, deleteTodo }) {
           aria-label="Mark as done"
         />
 
-        <div className="flex-1">
+        {/* text + 3-dot in same row */}
+        <div className="flex-1 flex items-center justify-between">
           {editing ? (
             <div className="flex flex-col sm:flex-row gap-2 w-full">
               <input
@@ -59,7 +62,7 @@ export default function TodoItem({ todo, updateTodo, deleteTodo }) {
               </button>
             </div>
           ) : (
-            <div className="flex flex-col">
+            <div className="flex-1">
               <p
                 className={`text-sm break-words ${
                   todo.status === "completed"
@@ -78,40 +81,56 @@ export default function TodoItem({ todo, updateTodo, deleteTodo }) {
               </small>
             </div>
           )}
+
+          {/* 3-dot status menu */}
+          {!editing && (
+            <div className="relative ml-2">
+              <button
+                onClick={() => setStatusMenuOpen(!statusMenuOpen)}
+                className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
+              >
+                <HiDotsVertical className="text-lg" />
+              </button>
+
+              {statusMenuOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border rounded shadow-lg z-20">
+                  {STATUS_OPTIONS.map((o) => (
+                    <button
+                      key={o.value}
+                      onClick={() => {
+                        updateTodo(todo.id, { status: o.value });
+                        setStatusMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Right section */}
-      <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:items-center">
+      {/* Right section - Edit + Delete */}
+      <div className="flex gap-2 sm:items-center">
         {!editing && (
-          <select
-            value={todo.status}
-            onChange={(e) =>
-              updateTodo(todo.id, { status: e.target.value })
-            }
-            className="border rounded px-2 py-1 w-full sm:w-auto"
-          >
-            {STATUS_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+          <>
+            <button
+              onClick={() => setEditing(true)}
+              className="px-3 py-1 bg-yellow-400 rounded"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => deleteTodo(todo.id)}
+              className="px-3 py-1 bg-red-500 text-white rounded"
+            >
+              Delete
+            </button>
+          </>
         )}
-        {!editing && (
-          <button
-            onClick={() => setEditing(true)}
-            className="px-3 py-1 bg-yellow-400 rounded w-full sm:w-auto"
-          >
-            Edit
-          </button>
-        )}
-        <button
-          onClick={() => deleteTodo(todo.id)}
-          className="px-3 py-1 bg-red-500 text-white rounded w-full sm:w-auto"
-        >
-          Delete
-        </button>
       </div>
     </li>
   );
